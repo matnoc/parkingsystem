@@ -18,16 +18,21 @@ public class FareCalculatorService {
         double duration = (outHour - inHour)/(double)(1000*60*60);
         //With getTime if we make outHour - inHour we give the time in millisecond beetween this two date and we divid by 1000*60*60 for have this time in hour.
 
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-                break;
-            }
-            case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-                break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
+        if(duration <= 0.5){
+            ticket.setPrice(0);
         }
+        else{
+            switch (ticket.getParkingSpot().getParkingType()){
+              case CAR: {
+                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                    break;
+                }
+                case BIKE: {
+                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                    break;
+                }
+                default: throw new IllegalArgumentException("Unkown Parking Type");
+            }
+    }
     }
 }
