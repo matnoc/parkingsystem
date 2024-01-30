@@ -1,17 +1,18 @@
 package com.parkit.parkingsystem.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
 
 public class TicketDAO {
 
@@ -36,8 +37,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+            return false;
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
@@ -65,8 +66,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
         }
+            return ticket;
     }
 
     public boolean updateTicket(Ticket ticket) {
@@ -85,5 +86,26 @@ public class TicketDAO {
             dataBaseConfig.closeConnection(con);
         }
         return false;
+    }
+
+    public int nbTicket(String vehicleRegNumber, String vehicleType){
+        Connection con = null;
+        try {
+            int visitNumber = -50;
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_FIRST_TICKET);
+            ps.setString(1, vehicleRegNumber);
+            ps.setString(2,vehicleType);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                visitNumber = rs.getInt(1);
+            }
+            return visitNumber;
+        }catch (Exception ex){
+            logger.error("Error show other ticket",ex);
+        }finally {
+            dataBaseConfig.closeConnection(con);
+        }
+        return 0;
     }
 }
