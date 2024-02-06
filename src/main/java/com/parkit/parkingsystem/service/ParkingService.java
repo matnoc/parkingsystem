@@ -30,6 +30,7 @@ public class ParkingService {
 
     public void processIncomingVehicle() {
         try{
+            System.out.println("JE SUIS PASSER PAR LA !!!");
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
@@ -49,7 +50,7 @@ public class ParkingService {
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
-                if(ticketDAO.nbTicket(vehicleRegNumber, ticket.getParkingSpot().getParkingType().toString())<2){
+                if(ticketDAO.nbTicket(vehicleRegNumber, ticket.getParkingSpot().getParkingType().toString())>1){
                     System.out.println("Heureux de vous revoir ! En tant qu’utilisateur régulier de notre parking, vous allez obtenir une remise de 5%");
                 }
             }
@@ -63,7 +64,7 @@ public class ParkingService {
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
-    public ParkingSpot getNextParkingNumberIfAvailable(){
+    public ParkingSpot getNextParkingNumberIfAvailable() throws Exception{
         int parkingNumber=0;
         ParkingSpot parkingSpot = null;
         try{
@@ -71,13 +72,16 @@ public class ParkingService {
             parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);
             if(parkingNumber > 0){
                 parkingSpot = new ParkingSpot(parkingNumber,parkingType, true);
-            }else{
+            }
+            else{
                 throw new Exception("Error fetching parking number from DB. Parking slots might be full");
             }
         }catch(IllegalArgumentException ie){
             logger.error("Error parsing user input for type of vehicle", ie);
+            throw new IllegalArgumentException("Error parsing user input for type of vehicle");
         }catch(Exception e){
             logger.error("Error fetching next available parking slot", e);
+            throw new Exception("Error fetching parking number from DB. Parking slots might be full");
         }
         return parkingSpot;
     }
@@ -125,5 +129,9 @@ public class ParkingService {
         }catch(Exception e){
             logger.error("Unable to process exiting vehicle",e);
         }
+    }
+
+    public FareCalculatorService getFareCalculatorService(){
+        return(fareCalculatorService);
     }
 }
