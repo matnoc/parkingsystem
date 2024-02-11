@@ -30,7 +30,6 @@ public class ParkingService {
 
     public void processIncomingVehicle() {
         try{
-            System.out.println("JE SUIS PASSER PAR LA !!!");
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
@@ -87,6 +86,7 @@ public class ParkingService {
     }
 
     private ParkingType getVehichleType(){
+        //Define the type ok vehicle use
         System.out.println("Please select vehicle type from menu");
         System.out.println("1 CAR");
         System.out.println("2 BIKE");

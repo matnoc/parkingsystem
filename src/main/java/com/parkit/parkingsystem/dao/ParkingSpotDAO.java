@@ -18,6 +18,7 @@ public class ParkingSpotDAO {
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
     public int getNextAvailableSlot(ParkingType parkingType){
+        //Find the avaible parking spot (for CAR or BIKE) unoccupied
         Connection con = null;
         int result=-1;
         try {
@@ -26,7 +27,7 @@ public class ParkingSpotDAO {
             ps.setString(1, parkingType.toString());
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                result = rs.getInt(1);;
+                result = rs.getInt(1);
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);

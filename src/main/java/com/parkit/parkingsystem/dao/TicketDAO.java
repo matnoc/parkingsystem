@@ -21,6 +21,7 @@ public class TicketDAO {
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
     public boolean saveTicket(Ticket ticket){
+        //Save the new ticket in database
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
@@ -42,6 +43,7 @@ public class TicketDAO {
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
+        //Find the last ticket corresponding to the vehicleRegNumber in database
         Connection con = null;
         Ticket ticket = null;
         try {
@@ -71,6 +73,7 @@ public class TicketDAO {
     }
 
     public boolean updateTicket(Ticket ticket) {
+        //take the ticket save with the function saveTicket() and give outTime and the price in database
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
@@ -89,6 +92,7 @@ public class TicketDAO {
     }
 
     public int nbTicket(String vehicleRegNumber, String vehicleType){
+        //Calculate the number of ticket in the database corresponding to the vehicleRegNumber
         Connection con = null;
         try {
             int visitNumber = -50;

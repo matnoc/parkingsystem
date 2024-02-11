@@ -125,9 +125,9 @@ public class ParkingDataBaseIT {
             }
         }catch (Exception ex){
         }
-            assertNotNull(outTime);
+            assertNotNull(outTime); // Check exit time
             assertEquals( true , exist );
-            assertNotEquals(price, 0);
+            assertNotEquals(price, 0); // Verify the price
     }
 
     @Test
@@ -167,8 +167,10 @@ public class ParkingDataBaseIT {
         }
         Boolean testpass = false;
             if(price<Fare.CAR_RATE_PER_HOUR){
+                //Verify if the discount was pass
                 testpass = true;
             }
+            //Verify if the ticketwas correctly implement
             assertNotNull(outTime);
             assertEquals( true , exist );
             assertEquals( true , testpass );
@@ -197,6 +199,7 @@ public void testGetTicket(){
             ticketDAO.updateTicket(ticket);
 }catch(Exception ex){
 }
+// Verify if the ticket return is correct
 assertEquals(ticket.getId(), ticketDAO.getTicket("ABCDEF").getId());
 assertEquals(ticket.getParkingSpot(), ticketDAO.getTicket("ABCDEF").getParkingSpot());
 assertEquals(ticket.getPrice(), ticketDAO.getTicket("ABCDEF").getPrice());

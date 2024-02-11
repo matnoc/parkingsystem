@@ -37,6 +37,7 @@ public class FareCalculatorService {
             }
         }
         else{
+            //If the vehicle have an another ticket in this parking he gain a discount
             calculateFareWithDiscount(ticket,duration);
         }
     }
